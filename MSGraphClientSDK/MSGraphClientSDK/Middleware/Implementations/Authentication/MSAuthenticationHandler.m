@@ -47,7 +47,7 @@
         {
             NSMutableURLRequest *urlRequest = [task request];
 
-            //INFO: ExplainEverytihng 2025
+            //INFO: ExplainEverything 2025
             //      If you include the Authorization header when issuing the PUT call,
             //      it may result in an HTTP 401 Unauthorized response.
             //      Only send the Authorization header and bearer token when issuing the POST during the first step.
