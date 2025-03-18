@@ -46,7 +46,17 @@
         if(!error)
         {
             NSMutableURLRequest *urlRequest = [task request];
-            [urlRequest setValue:[NSString stringWithFormat:@"Bearer %@",accessToken] forHTTPHeaderField:@"Authorization"];
+
+            //INFO: ExplainEverything 2025
+            //      If you include the Authorization header when issuing the PUT call,
+            //      it may result in an HTTP 401 Unauthorized response.
+            //      Only send the Authorization header and bearer token when issuing the POST during the first step.
+            //      Don't include it when you issue the PUT call.
+            //      https://learn.microsoft.com/en-us/graph/api/driveitem-createuploadsession?view=graph-rest-1.0#remarks
+            if (![task.request.HTTPMethod isEqualToString:@"PUT"]) {
+                [urlRequest setValue:[NSString stringWithFormat:@"Bearer %@",accessToken] forHTTPHeaderField:@"Authorization"];
+            }
+
             [task setRequest:urlRequest];
             [self.nextMiddleware execute:task withCompletionHandler:^(id data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                 completionHandler(data, response, error);
